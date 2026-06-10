@@ -33,6 +33,7 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{framed}     % barra lateral dos destaques (estilo acadêmico)
+\usepackage{lettrine}   % capitular (drop cap) no resumo, estilo livro
 \usepackage{ragged2e}
 
 % ---------- Cores e gráficos vetoriais ----------
@@ -89,7 +90,7 @@
 \newcommand{\projDisciplina}{Design Thinking \textbullet\ Projeto Integrador I}
 \newcommand{\projProfessora}{Profa. Samara Silvia Sabino}
 \newcommand{\projInstituicao}{ETE Cícero Dias}
-\newcommand{\projEtapa}{Etapa 01 \textemdash{} Imersão}
+\newcommand{\projEtapa}{Memorial de Projeto}
 \newcommand{\projData}{Recife, Maio de 2026}
 
 % ---------- Marca da escola (cabeçalho/capa) ----------
@@ -99,7 +100,6 @@
 %   \newcommand{\logoEscolaEscura}{\includegraphics[height=1.1cm]{imgs/logo-escola.png}}
 \newcommand{\logoEscolaClara}{\textcolor{white}{\sffamily\bfseries\large ETE CÍCERO DIAS}}
 \newcommand{\logoEscolaEscura}{\textcolor{oliveDeep}{\sffamily\bfseries\large ETE CÍCERO DIAS}}
-% CORRIGIDO: nomes dos arquivos ajustados para bater com o que existe na pasta imgs/
 \newcommand{\logoETE}{\includegraphics[height=1.5cm]{imgs/logoETE.png}}
 \newcommand{\logoNAVE}{\includegraphics[height=1.5cm]{imgs/logoNAVE.png}}
 
@@ -127,7 +127,7 @@
   \renewcommand{\headrulewidth}{0.6pt}
   \renewcommand{\headrule}{\hbox to\headwidth{\color{olive}\leaders\hrule height \headrulewidth\hfill}}
   \fancyhead[L]{\footnotesize\sffamily\textcolor{oliveDeep}{\textbf{REVESTU}}\ \textcolor{slate}{\textperiodcentered\ \projInstituicao}}
-  \fancyhead[R]{\footnotesize\sffamily\textcolor{slate}{Imersão \textperiodcentered\ Design Thinking}}
+  \fancyhead[R]{\footnotesize\sffamily\textcolor{slate}{Memorial de Projeto \textperiodcentered\ Design Thinking}}
   \fancyfoot[L]{\footnotesize\sffamily\textcolor{slate}{\projODS}}
   \fancyfoot[R]{\footnotesize\sffamily\textcolor{oliveDeep}{\textbf{\thepage}}}
 }
@@ -169,6 +169,15 @@
   \noindent\swatch{#1}\hspace{6pt}\begin{minipage}[t]{\dimexpr\linewidth-18pt\relax}#2\end{minipage}\par\vspace{3pt}%
 }
 
+% Banner horizontal: imagem cortada em faixa (largura total, altura fixa)
+\newcommand{\bannerImg}[2][5.6cm]{%
+  \noindent\begin{tikzpicture}
+    \clip (0,0) rectangle (\linewidth,#1);
+    \node[anchor=center, inner sep=0] at (0.5\linewidth, 0.5*#1) {\includegraphics[width=\linewidth]{#2}};
+    \draw[cream, line width=0.8pt] (0,0) rectangle (\linewidth,#1);
+  \end{tikzpicture}\par
+}
+
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
 
@@ -180,110 +189,147 @@
 \begin{titlepage}
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture, overlay]
-  % Fundo oliva ocupando toda a página
-  \fill[olive] (current page.south west) rectangle (current page.north east);
-  % Faixa amarela de detalhe (margem esquerda)
-  \fill[accentYellow] ([xshift=1.6cm]current page.west) rectangle ([xshift=1.75cm]current page.north west|-current page.south west);
+  % --- Imagem de capa sangrando na página inteira ---
+  \begin{scope}
+    \clip (current page.south west) rectangle (current page.north east);
+    \node at (current page.center) {\includegraphics[width=\paperwidth]{imgs/capa.jpg}};
+  \end{scope}
 
-  % Marca da escola \textemdash{} topo
-  \node[anchor=north west] at ([shift={(2.2cm,-2.2cm)}]current page.north west)
-    {\logoEscolaClara};
+  % --- Escurecimento (degradê em camadas) para legibilidade ---
+  \fill[black, opacity=0.20] (current page.south west) rectangle ([yshift=9.5cm]current page.south east);
+  \fill[black, opacity=0.26] (current page.south west) rectangle ([yshift=6.0cm]current page.south east);
+  \fill[black, opacity=0.40] (current page.south west) rectangle ([yshift=3.2cm]current page.south east);
+  \fill[black, opacity=0.24] (current page.north west) rectangle ([yshift=-2.7cm]current page.north east);
 
-  % Tarja ODS
-  \node[anchor=north west, text=white, font=\sffamily\bfseries] at ([shift={(2.2cm,-3.6cm)}]current page.north west)
-    {\small\projODS\ \textbullet\ \projGrupo};
+  % --- Moldura fina (vibe livro) ---
+  \draw[cream, line width=0.6pt]
+    ([shift={(0.9cm,0.9cm)}]current page.south west)
+    rectangle ([shift={(-0.9cm,-0.9cm)}]current page.north east);
 
-  % Título gigante
-  \node[anchor=west, text=white, align=left] at ([shift={(2.2cm,1.8cm)}]current page.west)
-    {\sffamily\bfseries\fontsize{96}{96}\selectfont \projTitulo};
+  % --- Topo: instituição ---
+  \node[anchor=north, text=cream, font=\sffamily] at ([yshift=-1.7cm]current page.north)
+    {\small ETE CÍCERO DIAS \ \textbullet\ \ NAVE};
 
-  % Subtítulo
-  \node[anchor=north west, text=white, align=left, text width=15cm] at ([shift={(2.4cm,0.2cm)}]current page.west)
-    {\sffamily\bfseries\large \projSubtitulo};
+  % --- Bloco de título (terço inferior) ---
+  \node[anchor=south west, text=white, align=left] at ([shift={(1.7cm,4.0cm)}]current page.south west)
+    {\sffamily\bfseries\fontsize{82}{82}\selectfont REVESTU};
+  \node[anchor=north west, text=cream, align=left, text width=15.5cm] at ([shift={(1.8cm,3.6cm)}]current page.south west)
+    {\sffamily\large \projSubtitulo};
 
-  % Selo de etapa
-  \node[anchor=north west, align=left] at ([shift={(2.4cm,-1.2cm)}]current page.west)
-    {\setlength{\fboxsep}{8pt}\colorbox{accentYellow}{\sffamily\bfseries\color{oliveDeep}\small RELATÓRIO DE IMERSÃO}};
+  % --- Linha + metadados ---
+  \draw[cream!85, line width=0.5pt]
+    ([shift={(1.8cm,2.75cm)}]current page.south west) -- ([shift={(9.0cm,2.75cm)}]current page.south west);
+  \node[anchor=north west, text=cream, align=left] at ([shift={(1.8cm,2.55cm)}]current page.south west)
+    {\sffamily\footnotesize MEMORIAL DE PROJETO \ \textbullet\ \ ODS 12 \ \textbullet\ \ GRUPO 02};
 
-  % Integrantes \textemdash{} rodapé
-  \node[anchor=south west, text=white, align=left] at ([shift={(2.2cm,2.0cm)}]current page.south west)
-    {\sffamily\footnotesize Andréa \quad Arthur Borges \quad Luiz Henrique \quad Matheus \quad Yasmin};
-  \node[anchor=south west, text=white, align=left] at ([shift={(2.2cm,1.5cm)}]current page.south west)
-    {\sffamily\footnotesize \projCurso\ \textbullet\ \projModulo};
+  % --- Crédito da foto (discreto) ---
+  \node[anchor=south east, text=cream, opacity=0.75, font=\sffamily\tiny] at ([shift={(-1.1cm,1.1cm)}]current page.south east)
+    {Foto: João Maraschin / divulgação};
 \end{tikzpicture}
 \end{titlepage}
-
-% ============================================================================
-%  PÁGINA DA EQUIPE  \textemdash{}  identificação + espaço para foto dos alunos
-% ============================================================================
-\thispagestyle{empty}
-\vspace*{1.4cm}
-\begin{center}
-  {\logoETE\hspace{1.4cm}\raisebox{2pt}{\logoNAVE}}\\[1.5cm]
-  {\sffamily\bfseries\color{oliveDeep}\fontsize{40}{40}\selectfont \projTitulo}\\[0.35cm]
-  {\sffamily\color{slate}\large \projGrupo\ \textbullet\ \projModulo}\\[1.3cm]
-
-  % Espaço reservado para a foto da equipe
-  \setlength{\fboxsep}{0pt}%
-  \fcolorbox{oliveSoft}{cream}{\parbox[c][7cm][c]{0.68\textwidth}{\centering\color{slate}\itshape [ Espaço para a foto da equipe ]}}\\[1.1cm]
-
-  {\sffamily\bfseries\color{oliveDeep}\large Integrantes}\\[0.5cm]
-  {\large Andréa \quad\textbullet\quad Arthur Borges \quad\textbullet\quad Luiz Henrique}\\[0.35cm]
-  {\large Matheus \quad\textbullet\quad Yasmin}
-\end{center}
-\clearpage
 
 % ============================================================================
 %  FOLHA DE ROSTO  \textemdash{}  estilo minimalista (referência: EPFL)
 % ============================================================================
 \thispagestyle{empty}
-\vspace*{1.6cm}
+\vspace*{2.2cm}
 \begin{center}
-  {\logoETE\hspace{1.2cm}\raisebox{2pt}{\logoNAVE}}\\[1.4cm]
-  {\sffamily\color{slate}\small \MakeUppercase{\projODS}}\\[1.0cm]
-  {\sffamily\bfseries\color{ink}\fontsize{46}{46}\selectfont \projTitulo}\\[0.5cm]
-  {\sffamily\bfseries\color{oliveDeep}\Large \projSubtitulo}\\[1.2cm]
-  {\itshape\color{slate} por}\\[0.5cm]
-  {\sffamily\bfseries\Large \projGrupo}\\[0.9cm]
+  {\logoETE\hspace{1.4cm}\logoNAVE}\\[2.4cm]
 
-  % Tabela de integrantes
-  \renewcommand{\arraystretch}{1.4}
-  \begin{tabular}{c}
-    \arrayrulecolor{oliveSoft}\toprule
-    {\sffamily\bfseries\color{oliveDeep} Integrantes do Grupo}\\
-    \midrule
-    Andréa \quad\textbullet\quad Arthur Borges \quad\textbullet\quad Luiz Henrique \\
-    Matheus \quad\textbullet\quad Yasmin \\
-    \bottomrule
-  \end{tabular}
+  {\sffamily\footnotesize\color{slate} \MakeUppercase{\projODS}}\\[0.45cm]
+  {\color{oliveSoft}\rule{2.4cm}{1.2pt}}\\[1.0cm]
+
+  {\sffamily\bfseries\color{ink}\fontsize{56}{56}\selectfont \projTitulo}\\[0.55cm]
+  {\itshape\large\color{oliveDeep} \projSubtitulo}\\[2.6cm]
+
+  {\sffamily\color{slate}\large \projGrupo \quad\textperiodcentered\quad \projModulo}\\[0.55cm]
+  {\color{ink} Andréa \ \textperiodcentered\ \ Arthur Borges \ \textperiodcentered\ \ Luiz Henrique \ \textperiodcentered\ \ Matheus \ \textperiodcentered\ \ Yasmin}
 \end{center}
 
 \vfill
 
-% Bloco de informações do trabalho
+\begin{center}
+  {\color{oliveSoft}\rule{0.42\textwidth}{0.5pt}}\\[0.7cm]
+  {\sffamily\footnotesize\color{slate}
+    \projInstituicao \ \textbullet\ \ \projCurso\\[3pt]
+    \projDisciplina\\[3pt]
+    \projProfessora \quad\textperiodcentered\quad \projEtapa\\[3pt]
+    \projData}
+\end{center}
+\vspace{1.2cm}
+
+\clearpage
+
+% ============================================================================
+%  PÁGINA DA EQUIPE  \textemdash{}  um espaço de foto para cada integrante
+% ============================================================================
+\thispagestyle{empty}
+\vspace*{1.5cm}
+\begin{center}
+  {\logoETE\hspace{1.4cm}\logoNAVE}\\[1.2cm]
+  {\sffamily\bfseries\color{oliveDeep}\fontsize{34}{34}\selectfont \projTitulo}\\[0.25cm]
+  {\sffamily\color{slate}\large Equipe \textbullet\ \projGrupo\ \textbullet\ \projModulo}\\[1.5cm]
+
+  \newcommand{\membro}[1]{%
+    \begin{minipage}[t]{3.7cm}\centering
+      \setlength{\fboxsep}{0pt}%
+      \fcolorbox{oliveSoft}{cream}{\parbox[c][4.7cm][c]{3.7cm}{\centering\color{slate}\scriptsize\itshape [ foto ]}}\\[6pt]
+      {\sffamily\small\color{ink} #1}
+    \end{minipage}}
+
+  \membro{Andréa}\hspace{0.55cm}%
+  \membro{Arthur Borges}\hspace{0.55cm}%
+  \membro{Luiz Henrique}\\[0.95cm]
+  \membro{Matheus}\hspace{0.55cm}%
+  \membro{Yasmin}
+\end{center}
+\clearpage
+
+% ============================================================================
+%  PÁGINA DA PROFESSORA  \textemdash{}  o desafio + tempo + foto (recorrente)
+%  >>> Texto genérico, reutilizável em todos os projetos.
+%      Ajuste a duração em \duracaoProjeto abaixo.
+% ============================================================================
+\thispagestyle{empty}
+\newcommand{\duracaoProjeto}{1º de abril a 1º de junho de 2026}   % <<< ajuste o período aqui
+\vspace*{1.0cm}
+
+{\centering\sffamily\footnotesize\color{olive} NOTA DA PROFESSORA\par}
+\vspace{0.28cm}
+{\centering\sffamily\bfseries\fontsize{36}{36}\selectfont\color{ink} O Desafio\par}
+\vspace{0.28cm}
+{\centering{\color{oliveSoft}\rule{2.6cm}{1.2pt}}\par}
+\vspace{0.7cm}
+
 \begin{center}
 \begin{minipage}{0.82\textwidth}
-\setlength{\arrayrulewidth}{0pt}
-\renewcommand{\arraystretch}{1.35}
-\sffamily\small
-\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{oliveDeep}}l X@{}}
-Instituição    & \projInstituicao \\
-Curso          & \projCurso \\
-Módulo / Turma & \projModulo \\
-Disciplina     & \projDisciplina \\
-Professora     & \projProfessora \\
-Objetivo (ODS) & \projODS \\
-Etapa          & \projEtapa \\
-\end{tabularx}
+{\centering\itshape\large\color{oliveDeep} Aprender resolvendo problemas reais: por que um desafio como este vale mais do que uma prova.\par}
+\vspace{0.55cm}
+
+\setlength{\parskip}{6pt}
+\color{ink}
+Este memorial documenta um \textbf{projeto integrador} conduzido pelo método do \textbf{Design Thinking}. Partindo de um dos Objetivos de Desenvolvimento Sustentável (ODS) da ONU, cada grupo identifica um problema real, investiga-o a fundo nas etapas de Imersão e Definição e chega à proposta de um protótipo. Não é um exercício teórico: é a vivência completa de como uma ideia se transforma em solução, conduzida ao longo de cerca de dois meses (\duracaoProjeto).
+
+Do ponto de vista \textbf{pedagógico}, o desafio coloca o estudante no centro da própria aprendizagem. Em vez de receber respostas prontas, ele formula perguntas, coleta dados, erra, refaz e defende suas escolhas. Essa aprendizagem ativa desenvolve pensamento crítico, empatia com o usuário, trabalho em equipe e autonomia \textemdash{} competências que nenhuma prova tradicional consegue medir.
+
+Do ponto de vista \textbf{mercadológico}, é exatamente assim que se trabalha no mundo real. Pesquisa de usuário, definição de problema, prototipação e validação são as etapas de qualquer time de produto, design ou tecnologia. Ao terminar, o estudante não leva apenas uma nota: leva um caso documentado, material de portfólio e a experiência concreta que o mercado procura.
 \end{minipage}
 \end{center}
 
-\vspace{0.8cm}
-\begin{center}
-  \logoEscolaEscura\\[2pt]
-  {\sffamily\footnotesize\color{slate}\projData}
-\end{center}
+\vfill
 
+\begin{center}
+  {\color{creamMid}\rule{0.35\textwidth}{0.6pt}}\\[0.5cm]
+  \begin{tikzpicture}
+    \node[circle, draw=oliveSoft, line width=1.5pt, minimum size=3.0cm, inner sep=0,
+          path picture={\node at (path picture bounding box.center)
+            {\includegraphics[width=3.3cm]{imgs/avatar-samara.jpg}};}] {};
+  \end{tikzpicture}\\[0.4cm]
+  {\sffamily\bfseries\color{oliveDeep} Profa. Samara Silvia Sabino}\\[3pt]
+  {\sffamily\footnotesize\color{slate} Design Thinking \textperiodcentered\ Projeto Integrador \textperiodcentered\ ETE Cícero Dias}\\[2pt]
+  {\sffamily\footnotesize\color{slate} \duracaoProjeto}
+\end{center}
+\vspace{0.9cm}
 \clearpage
 
 % ============================================================================
@@ -292,34 +338,52 @@ Etapa          & \projEtapa \\
 \pagestyle{corpo}
 
 \begin{center}
-  {\sffamily\bfseries\Large\color{oliveDeep} Resumo}
+  {\sffamily\large\color{oliveDeep} \MakeUppercase{Resumo}}\\[3pt]
+  {\color{oliveSoft}\rule{1.8cm}{1pt}}
 \end{center}
-\vspace{2pt}
+\vspace{0.5cm}
 
 {\color{ink}
-Nosso projeto busca entender como grandes marcas incentivam o consumo de seus artigos e produtos. Também buscamos saber como a o próprio site oferece os produtos que o usuário procura, será que o site induz o cliente de forma positiva? O ajudando em suas procuras ou apenas jogando informações e produtos que talvez não sejam o que ele procura? Incentivando assim o consumismo desenfreado\ldots\ Assim a ODS 12 se encaixaria totalmente na ideia de consumo, produção responsável e economia circular. Nossa plataforma seria um incentivo tanto para o consumidor quanto para grandes empresas. Durante nossa pesquisa e formulação da ideia, buscamos entender o real impacto que o descarte de artigos de vestiário causam em nosso ecossistema e quais são os caminhos para trazer um futuro mais sustentável e ecológico.
+\lettrine[lines=3, lhang=0.08, findent=3pt, nindent=8pt]{\color{oliveDeep}\sffamily N}{osso} projeto busca entender como grandes marcas incentivam o consumo de seus artigos e produtos. Também buscamos saber como a o próprio site oferece os produtos que o usuário procura, será que o site induz o cliente de forma positiva? O ajudando em suas procuras ou apenas jogando informações e produtos que talvez não sejam o que ele procura? Incentivando assim o consumismo desenfreado\ldots\ Assim a ODS 12 se encaixaria totalmente na ideia de consumo, produção responsável e economia circular. Nossa plataforma seria um incentivo tanto para o consumidor quanto para grandes empresas. Durante nossa pesquisa e formulação da ideia, buscamos entender o real impacto que o descarte de artigos de vestiário causam em nosso ecossistema e quais são os caminhos para trazer um futuro mais sustentável e ecológico.
 \par}
 
 \vspace{6pt}
-\noindent\textbf{Palavras-chave:} Reciclagem, Fast Fashion, Economia circular, Poliéster, ODS 12.
-
-\noindent\textbf{Outras palavras-chave:} Greenwashing, ACV (análise de ciclo de vida), Ecofashion.
+\noindent\textbf{Palavras-chave:} Reciclagem; Fast Fashion; Economia circular; Poliéster; Greenwashing; ACV (análise de ciclo de vida); Ecofashion; ODS 12.
 
 \vspace{10pt}
-\noindent{\sffamily\bfseries\color{oliveDeep} Destaques da Imersão}
+\noindent{\sffamily\bfseries\color{oliveDeep} Destaques}
+\vspace{2pt}
 
-\citacaoDestaque{``há sim possibilidade de reciclar os retalhos e transformá-los em uma nova peça, porém acaba não sendo o foco das indústrias nesses setores. Pois teriam de ter uma grande disponibilização de pessoas para fazer o processo de separação dos retalhos por cores e por composição, aumentando o custo do processo. Mesmo tendo isso como um fator complicador, as empresas que acatarem esse tipo de trabalho, com o tempo terá um baixo custo no processo pois não precisaria investir no plantio e em agrotóxicos que causam impacto no meio ambiente.''\textsuperscript{1}}{Reciclagem têxtil}
-
-\citacaoDestaque{As pessoas vão se dar ao trabalho de levar a roupa até um ponto de coleta por causa de pontos/descontos.}{Hipótese do Grupo 02}
-
-\citacaoDestaque{``intervir diretamente no produto durante sua fase de projeto torna-se mais interessante e eco eficiente, do que buscar soluções end of pipe, ou paliativas para os danos já causados.''\textsuperscript{2}}{Greenwashing e impacto têxtil}
+\begin{itemize}[leftmargin=1.2em, itemsep=4pt, label=\textcolor{oliveSoft}{\textbf{\textbullet}}]
+  \item O setor têxtil é um dos mais poluentes do mundo: o fast fashion gera cerca de 92 milhões de toneladas de resíduos por ano.
+  \item O poliéster e as fibras sintéticas predominam nas peças e dificultam a reciclagem.
+  \item O greenwashing mascara práticas insustentáveis e confunde o consumidor.
+  \item A principal barreira ao descarte correto é logística: faltam pontos de coleta e tempo.
+  \item O público exige transparência sobre a durabilidade e o destino final das roupas.
+\end{itemize}
 
 \correcao{A estrutura geral do documento está incorreta. Revisar a ordem das seções seguindo o roteiro da disciplina (Imersão): a sequência das etapas e o encadeamento entre Pesquisa Desk, Observação e Formulário precisam ser reorganizados.}
 
 % ============================================================================
+%  SUMÁRIO
+% ============================================================================
+\clearpage
+\vspace*{0.4cm}
+{\sffamily\bfseries\fontsize{34}{34}\selectfont\color{oliveDeep} Sumário}\par
+\vspace{4pt}{\color{olive}\rule{\linewidth}{1.5pt}}\par
+\vspace{0.8cm}
+\setcounter{tocdepth}{2}
+\makeatletter
+\@starttoc{toc}
+\makeatother
+
+% ============================================================================
 %  1. INTRODUÇÃO
 % ============================================================================
-\novaSecao{Introdução}
+\clearpage
+\bannerImg{imgs/intro.jpg}
+\vspace{0.5cm}
+\section{Introdução}
 
 Para a criação do projeto foi necessário entender e usar o design thinking, ``uma abordagem criativa, que é centrada nas pessoas, com o objetivo na resolução de problemas e desenvolvimento de soluções inovadoras. O foco principal é entender as necessidades e desejos das pessoas, para quem um produto, serviço ou sistema está sendo projetado.
 
@@ -329,6 +393,7 @@ Com isso, pensando na resolução de um tão problema real como: o destino dos r
 
 Para dar mais sentido ao nosso projeto, conectamos ele com uma das ODS's da ONU. O que buscamos é que um problema real seja solucionado ou minimizado. A ODS escolhida foi a 12 que abrange o consumo e a produção responsável, e com nossa ideia vimos que as metas 12.2, 12.5 e 12.8 se relacionam com nossa ideia principal.
 
+\clearpage
 \subsection*{Metas da ODS 12}
 \begin{itemize}[leftmargin=1.4cm, itemsep=10pt]
   \item[\textcolor{olive}{\textbf{12.2}}] Alcançar a gestão sustentável e o uso eficiente dos recursos naturais.
@@ -428,6 +493,8 @@ A reciclagem de tecidos sintéticos é algo dificil de ser feito, se a coleta de
 
 \citacaoDestaque{``A princípio esse tipo de reciclagem iria ajudar a reduzir a necessidade do consumo de materiais virgens e diminuiria a quantidade de tecidos que vão parar nos aterros, auxiliando na limitação do impacto no meio ambiente. Talvez futuramente teremos outras técnicas mais aprimoradas que irão baratear esse tipo de processo.''\textsuperscript{4}}{Reciclagem têxtil: algodão e poliéster}
 
+\citacaoDestaque{``há sim possibilidade de reciclar os retalhos e transformá-los em uma nova peça, porém acaba não sendo o foco das indústrias nesses setores. Pois teriam de ter uma grande disponibilização de pessoas para fazer o processo de separação dos retalhos por cores e por composição, aumentando o custo do processo. Mesmo tendo isso como um fator complicador, as empresas que acatarem esse tipo de trabalho, com o tempo terá um baixo custo no processo pois não precisaria investir no plantio e em agrotóxicos que causam impacto no meio ambiente.''\textsuperscript{1}}{Reciclagem têxtil}
+
 \subsection{Fast fashion}
 O fenômeno do fast fashion revolucionou a indústria global ao democratizar o acesso às tendências de moda por meio de uma produção acelerada, de baixo custo e com coleções passageiras. No entanto, essa lógica de consumo rápido gera um severo custo socioambiental, conforme evidencia o trecho analisado, que expõe impactos alarmantes como o descarte anual de 92 milhões de toneladas de resíduos e o consumo de 79 trilhões de litros de água. Diante desse cenário de degradação química e altas emissões de carbono, torna-se evidente que a sustentabilidade do setor depende de uma reforma estrutural imediata. Essa transformação exige tanto a desaceleração do ritmo fabril por parte das empresas quanto uma mudança profunda no comportamento do consumidor, estimulando a transição urgente para as práticas conscientes da ``moda lenta''.
 
@@ -437,6 +504,8 @@ O fenômeno do fast fashion revolucionou a indústria global ao democratizar o a
 \textit{Muitas marcas dizem que são sustentáveis apenas por marketing.}
 
 \citacaoDestaque{``As adversidades ambientais modificaram os paradigmas de produção e consumo de produtos e serviços em geral, favorecendo iniciativas que ludibriam o consumidor com produtos pseudoecológicos, prática chamada greenwashing.''\textsuperscript{6}}{Greenwashing e impacto ambiental na indústria têxtil}
+
+\citacaoDestaque{``intervir diretamente no produto durante sua fase de projeto torna-se mais interessante e eco eficiente, do que buscar soluções end of pipe, ou paliativas para os danos já causados.''\textsuperscript{2}}{Greenwashing e impacto têxtil}
 
 % ============================================================================
 %  4. PESQUISA PRIMÁRIA
@@ -525,8 +594,6 @@ Pesquisa de campo para saber se o público tem um hábito de reciclar artigos de
 \end{figure}
 
 % ---------- GRÁFICO 9 ----------
-% ATENÇÃO: conferir os dados abaixo no Google Forms.
-% A distribuição atual (66.7, 28.6, 4.8) é idêntica ao Gráfico 8 — pode ser duplicação.
 \begin{figure}[H]
 \centering
 \caption{Com que frequência você avalia o estado das suas roupas para doação ou reciclagem? \\ \small Amostra: 17 pessoas que responderam via internet}\label{fig:graf9}
@@ -589,19 +656,24 @@ Os resultados da pesquisa revelam que o principal gargalo no ciclo de consumo e 
 
 % ============================================================================
 %  5. DEFINIÇÃO
-% CORRIGIDO: era \section{Definição}, trocado para \novaSecao{Definição}
-%            para manter o estilo visual e abrir em nova página como as demais seções.
 % ============================================================================
 \novaSecao{Definição}
 
+A etapa de Definição é o momento do Design Thinking em que sintetizamos tudo o que foi descoberto na Imersão para delimitar, com clareza, qual problema vamos resolver. Depois de divergir \textemdash{} coletando dados na Pesquisa Desk, na Observação e no Formulário \textemdash{}, aqui nós convergimos: organizamos os achados em ferramentas visuais (enunciado do problema, persona, mapa de empatia e jornada do usuário) que transformam informação dispersa em um retrato concreto de quem é afetado e do que essa pessoa precisa. É essa definição que orienta a fase seguinte, a Ideação.
+
+\subsection{Enunciado do Problema}
+
+A partir da síntese dos dados da Imersão, o problema central do projeto foi definido no seguinte enunciado:
+
+\begin{citacaoBox}
+Pessoas que consomem vestuário com frequência precisam de uma forma simples e confiável de descartar e reciclar suas roupas, porque hoje faltam pontos de coleta acessíveis e informação sobre o destino correto das peças \textemdash{} o que leva ao acúmulo e ao descarte incorreto.
+\end{citacaoBox}
+
+\correcao{Enunciado proposto a partir dos dados do formulário (gargalo logístico). Conferir se ele reflete a dor principal apontada pela persona; se a persona indicar outra prioridade, ajustar a frase para casar com ela.}
+
 \subsection{Persona}
 
-% >>> Substitua o conteúdo de exemplo abaixo pelo conteúdo real do REVESTU
-%     (persona Flademir ou equivalente ao projeto de reciclagem de vestuário).
-
-\vspace{0.3cm}
-\noindent A Figura~\ref{fig:persona} apresenta o painel visual da persona construída
-no Figma, consolidando os principais atributos identificados.
+A Figura~\ref{fig:persona} apresenta o painel visual da persona construída no Figma, consolidando os principais atributos identificados.
 
 \begin{figure}[H]
     \centering
@@ -610,16 +682,11 @@ no Figma, consolidando os principais atributos identificados.
     \label{fig:persona}
 \end{figure}
 
-% ============================================================
 \subsection{Mapa de Empatia}
 
-O Mapa de Empatia foi construído como ferramenta de síntese qualitativa, organizado em
-sete dimensões que aprofundam a compreensão da experiência da persona para além dos
-dados numéricos do formulário.
+O Mapa de Empatia foi construído como ferramenta de síntese qualitativa, organizado em sete dimensões que aprofundam a compreensão da experiência da persona para além dos dados numéricos do formulário.
 
-\vspace{0.3cm}
-\noindent A Figura~\ref{fig:empatia} apresenta o Mapa de Empatia visual elaborado no
-Figma, estruturado conforme os sete quadrantes da ferramenta.
+A Figura~\ref{fig:empatia} apresenta o Mapa de Empatia visual elaborado no Figma, estruturado conforme os sete quadrantes da ferramenta.
 
 \begin{figure}[H]
     \centering
@@ -628,37 +695,21 @@ Figma, estruturado conforme os sete quadrantes da ferramenta.
     \label{fig:empatia}
 \end{figure}
 
-% ============================================================
-\subsection{Enunciado do Problema}
-
-A partir da síntese dos dados da Imersão e da construção da persona, o problema central
-do projeto foi definido no seguinte enunciado:
-
-\vspace{0.3cm}
-\begin{quote}
-% >>> Substituir pelo enunciado real do Grupo 02 (REVESTU).
-\textit{[ Enunciado do problema do grupo aqui. ]}
-\end{quote}
-
-% ============================================================
 \subsection{Jornada do Usuário}
 
-\vspace{0.3cm}
-\noindent A Figura~\ref{fig:jornada} apresenta a representação visual da Jornada do
-Usuário elaborada no Figma.
+A Figura~\ref{fig:jornada} apresenta a representação visual da Jornada do Usuário elaborada no Figma.
 
 \begin{figure}[H]
     \centering
-    % CORRIGIDO: nome do arquivo ajustado para o que existe na pasta imgs/
     \includegraphics[width=\textwidth]{imgs/jornada-usuario-fladmir.png}
     \caption{Mapa da Jornada do Usuário}
     \label{fig:jornada}
 \end{figure}
 
 % ============================================================================
-%  6. FONTES
+%  6. REFERÊNCIAS
 % ============================================================================
-\novaSecao{Fontes}
+\novaSecao{Referências}
 
 \noindent\textit{Todas as pesquisas e artigos adicionados foram publicados no período de 2019 há 2024.}
 
@@ -677,5 +728,11 @@ Usuário elaborada no Figma.
 \refnum{7} DEMINSKI, Carla Carolina Deola. \textbf{Microplásticos e a indústria do vestuário: uma revisão}. 2021. Trabalho de Conclusão de Curso (Tecnologia em Design de Moda) --- Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul, Erechim, 2021. Disponível em: \url{https://dspace.ifrs.edu.br/xmlui/handle/123456789/1740}. Acesso em: 24 maio 2026.
 
 \refnum{8} BERNETTI, Martin. \textbf{Montanha de roupas descartadas no Deserto do Atacama, no Chile}. 2022. 1 fotografia. Agence France-Presse. In: BBC NEWS BRASIL. O cemitério de `fast fashion' no deserto do Atacama. Londres, 25 jan. 2022. Disponível em: \url{https://www.bbc.com/portuguese/internacional-60144656}. Acesso em: 24 maio 2026.
+
+\vspace{6pt}
+\noindent{\sffamily\bfseries\color{oliveDeep}\small Material autoral \textemdash{} entrega da Definição}
+\vspace{2pt}
+
+\refnum{9} GRUPO 02 (Curso Técnico em Desenvolvimento de Sistemas, ETE Cícero Dias). \textbf{REVESTU \textemdash{} Definição: moda sustentável}: persona, mapa de empatia e jornada do usuário. Recife, 2026. Projeto de design elaborado no Figma. Disponível em: \url{https://www.figma.com/design/PuwjNqwnNExc5uRhbNMHH0/Grupo-02-Definicao-Moda-Sustentavel}. Acesso em: 10 jun. 2026.
 
 \end{document}
