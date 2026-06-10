@@ -1,0 +1,681 @@
+% ============================================================================
+%  RELATÓRIO DE IMERSÃO \textemdash{} GRUPO 02 \textperiodcentered{} REVESTU
+%  ODS 12: Consumo e Produção Sustentável
+%  Projeto Integrador I / Design Thinking \textemdash{} Módulo 1, Turma A
+%  ETE Cícero Dias
+%
+%  Compilação: pdflatex (2x) \textemdash{} compatível com Overleaf e Google Colab.
+%  Estrutura no padrão de template da disciplina (capa, folha de rosto,
+%  aberturas de seção numeradas, gráficos vetoriais e referências).
+% ============================================================================
+
+\documentclass[12pt, a4paper]{article}
+
+% ---------- Codificação e idioma ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\setlength{\headheight}{15pt}   % evita aviso do fancyhdr
+
+% ---------- Tipografia ----------
+\usepackage{lmodern}
+\usepackage{helvet}            % família sans (Helvetica) p/ títulos e capa
+\renewcommand{\familydefault}{\rmdefault}
+
+% ---------- Recursos gráficos e tabelas ----------
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{xltabular}    % tabularx que quebra entre páginas (matrizes)
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{framed}     % barra lateral dos destaques (estilo acadêmico)
+\usepackage{ragged2e}
+
+% ---------- Cores e gráficos vetoriais ----------
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{pgfplots}
+\usepackage{pgf-pie}
+\pgfplotsset{compat=1.18}
+
+% ---------- Layout de página, capa e títulos ----------
+\usepackage{tikz}
+\usetikzlibrary{shadows}
+\usepackage{eso-pic}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+
+% ============================================================================
+%  PALETA DO PROJETO  (extraída da persona "Flademir" \textemdash{} verde-oliva + amarelo)
+%  >>> Para trocar a identidade visual, ajuste APENAS as 8 cores abaixo. <<<
+% ============================================================================
+\definecolor{oliveDeep}{HTML}{4F5715}   % oliva escuro \textemdash{} títulos e contraste
+\definecolor{olive}{HTML}{6E7524}        % oliva principal \textemdash{} capa e cabeçalhos
+\definecolor{oliveSoft}{HTML}{A9B24A}    % oliva claro \textemdash{} números e detalhes
+\definecolor{accentYellow}{HTML}{E0C13C} % amarelo (post-it) \textemdash{} destaques
+\definecolor{cream}{HTML}{F4F3E2}        % creme \textemdash{} fundos de bloco
+\definecolor{creamMid}{HTML}{E6E7CC}     % creme médio \textemdash{} linhas de tabela
+\definecolor{ink}{HTML}{1C1C18}          % quase-preto \textemdash{} texto
+\definecolor{slate}{HTML}{555555}        % cinza \textemdash{} rótulos e dados
+\definecolor{corCorrecao}{HTML}{B02A26}  % vermelho \textemdash{} anotações de correção
+\definecolor{corCorrecaoBg}{HTML}{FAEDEC}% fundo claro das correções
+
+% ---------- Hyperlinks ----------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=oliveDeep,
+    filecolor=oliveDeep,
+    urlcolor=olive,
+    citecolor=olive,
+    breaklinks=true
+}
+
+% ============================================================================
+%  DADOS DO TRABALHO  (centralize aqui qualquer alteração de identificação)
+% ============================================================================
+\newcommand{\projTitulo}{REVESTU}
+\newcommand{\projSubtitulo}{Solução para consumo consciente e reciclagem de vestuário}
+\newcommand{\projODS}{ODS 12 \textemdash{} Consumo e Produção Sustentável}
+\newcommand{\projGrupo}{Grupo 02}
+\newcommand{\projIntegrantes}{Andréa \and Arthur Borges \and Luiz Henrique \and Matheus \and Yasmin}
+\newcommand{\projCurso}{Técnico em Desenvolvimento de Sistemas}
+\newcommand{\projModulo}{Módulo 1 \textbullet\ Turma A}
+\newcommand{\projDisciplina}{Design Thinking \textbullet\ Projeto Integrador I}
+\newcommand{\projProfessora}{Profa. Samara Silvia Sabino}
+\newcommand{\projInstituicao}{ETE Cícero Dias}
+\newcommand{\projEtapa}{Etapa 01 \textemdash{} Imersão}
+\newcommand{\projData}{Recife, Maio de 2026}
+
+% ---------- Marca da escola (cabeçalho/capa) ----------
+% Quando tiver a imagem da escola, salve-a como  imgs/logo-escola.png
+% e troque a definição abaixo por:
+%   \newcommand{\logoEscolaClara}{\includegraphics[height=1.1cm]{imgs/logo-escola-branca.png}}
+%   \newcommand{\logoEscolaEscura}{\includegraphics[height=1.1cm]{imgs/logo-escola.png}}
+\newcommand{\logoEscolaClara}{\textcolor{white}{\sffamily\bfseries\large ETE CÍCERO DIAS}}
+\newcommand{\logoEscolaEscura}{\textcolor{oliveDeep}{\sffamily\bfseries\large ETE CÍCERO DIAS}}
+% CORRIGIDO: nomes dos arquivos ajustados para bater com o que existe na pasta imgs/
+\newcommand{\logoETE}{\includegraphics[height=1.5cm]{imgs/logoETE.png}}
+\newcommand{\logoNAVE}{\includegraphics[height=1.5cm]{imgs/logoNAVE.png}}
+
+% ============================================================================
+%  ESTILO DAS ABERTURAS DE SEÇÃO  (número grande + título \textemdash{} estilo capítulo)
+% ============================================================================
+\titleformat{\section}[display]
+  {\normalfont\sffamily}
+  {\flushright\fontsize{84}{84}\selectfont\bfseries\color{oliveSoft}\thesection}
+  {6pt}
+  {\Huge\bfseries\color{oliveDeep}\filright}
+\titlespacing*{\section}{0pt}{0pt}{30pt}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries\color{oliveDeep}}
+  {\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{16pt}{6pt}
+
+% Cada seção principal começa em página nova, com mais respiro no topo
+\newcommand{\novaSecao}[1]{\clearpage\vspace*{2.2cm}\section{#1}}
+
+% ---------- Cabeçalho e rodapé ----------
+\fancypagestyle{corpo}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0.6pt}
+  \renewcommand{\headrule}{\hbox to\headwidth{\color{olive}\leaders\hrule height \headrulewidth\hfill}}
+  \fancyhead[L]{\footnotesize\sffamily\textcolor{oliveDeep}{\textbf{REVESTU}}\ \textcolor{slate}{\textperiodcentered\ \projInstituicao}}
+  \fancyhead[R]{\footnotesize\sffamily\textcolor{slate}{Imersão \textperiodcentered\ Design Thinking}}
+  \fancyfoot[L]{\footnotesize\sffamily\textcolor{slate}{\projODS}}
+  \fancyfoot[R]{\footnotesize\sffamily\textcolor{oliveDeep}{\textbf{\thepage}}}
+}
+
+% ---------- Citação em destaque (estilo acadêmico: recuo + barra lateral) ----------
+\newenvironment{citacaoBox}{%
+  \par\vspace{6pt}%
+  \def\FrameCommand{{\color{oliveSoft}\vrule width 2pt}\hspace{12pt}}%
+  \MakeFramed{\advance\hsize-\width\FrameRestore}%
+  \small\itshape\color{ink}%
+}{%
+  \par\endMakeFramed\vspace{6pt}%
+}
+\newcommand{\citacaoDestaque}[2]{%
+  \begin{citacaoBox}#1\par\vspace{4pt}%
+    {\normalfont\footnotesize\color{slate}\hfill\textsc{\textemdash{}\,#2}}%
+  \end{citacaoBox}%
+}
+
+% ---------- Anotação de correção da professora (vermelho; pode ligar/desligar) ----------
+\newif\ifmostrarcorrecoes
+\mostrarcorrecoestrue   % <<< troque para \mostrarcorrecoesfalse na versão final (some as correções)
+\newcommand{\correcao}[1]{%
+  \ifmostrarcorrecoes
+    \par\vspace{6pt}\noindent
+    \setlength{\fboxsep}{9pt}%
+    \fcolorbox{corCorrecao}{corCorrecaoBg}{%
+      \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+        {\sffamily\bfseries\footnotesize\color{corCorrecao}\textsf{CORREÇÃO \textemdash{} PROFA. SAMARA}}\par\vspace{3pt}
+        {\normalfont\small\color{corCorrecao} #1}
+      \end{minipage}}%
+    \par\vspace{6pt}
+  \fi
+}
+
+% Item de legenda de cores p/ gráficos (swatch + texto da resposta, intacto)
+\newcommand{\swatch}[1]{\raisebox{0.5pt}{\tikz{\fill[#1] (0,0) rectangle (9pt,9pt);}}}
+\newcommand{\legendaItem}[2]{%
+  \noindent\swatch{#1}\hspace{6pt}\begin{minipage}[t]{\dimexpr\linewidth-18pt\relax}#2\end{minipage}\par\vspace{3pt}%
+}
+
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+% ============================================================================
+%  CAPA  \textemdash{}  estilo bloco de cor (referência: capa University of Dundee)
+% ============================================================================
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  % Fundo oliva ocupando toda a página
+  \fill[olive] (current page.south west) rectangle (current page.north east);
+  % Faixa amarela de detalhe (margem esquerda)
+  \fill[accentYellow] ([xshift=1.6cm]current page.west) rectangle ([xshift=1.75cm]current page.north west|-current page.south west);
+
+  % Marca da escola \textemdash{} topo
+  \node[anchor=north west] at ([shift={(2.2cm,-2.2cm)}]current page.north west)
+    {\logoEscolaClara};
+
+  % Tarja ODS
+  \node[anchor=north west, text=white, font=\sffamily\bfseries] at ([shift={(2.2cm,-3.6cm)}]current page.north west)
+    {\small\projODS\ \textbullet\ \projGrupo};
+
+  % Título gigante
+  \node[anchor=west, text=white, align=left] at ([shift={(2.2cm,1.8cm)}]current page.west)
+    {\sffamily\bfseries\fontsize{96}{96}\selectfont \projTitulo};
+
+  % Subtítulo
+  \node[anchor=north west, text=white, align=left, text width=15cm] at ([shift={(2.4cm,0.2cm)}]current page.west)
+    {\sffamily\bfseries\large \projSubtitulo};
+
+  % Selo de etapa
+  \node[anchor=north west, align=left] at ([shift={(2.4cm,-1.2cm)}]current page.west)
+    {\setlength{\fboxsep}{8pt}\colorbox{accentYellow}{\sffamily\bfseries\color{oliveDeep}\small RELATÓRIO DE IMERSÃO}};
+
+  % Integrantes \textemdash{} rodapé
+  \node[anchor=south west, text=white, align=left] at ([shift={(2.2cm,2.0cm)}]current page.south west)
+    {\sffamily\footnotesize Andréa \quad Arthur Borges \quad Luiz Henrique \quad Matheus \quad Yasmin};
+  \node[anchor=south west, text=white, align=left] at ([shift={(2.2cm,1.5cm)}]current page.south west)
+    {\sffamily\footnotesize \projCurso\ \textbullet\ \projModulo};
+\end{tikzpicture}
+\end{titlepage}
+
+% ============================================================================
+%  PÁGINA DA EQUIPE  \textemdash{}  identificação + espaço para foto dos alunos
+% ============================================================================
+\thispagestyle{empty}
+\vspace*{1.4cm}
+\begin{center}
+  {\logoETE\hspace{1.4cm}\raisebox{2pt}{\logoNAVE}}\\[1.5cm]
+  {\sffamily\bfseries\color{oliveDeep}\fontsize{40}{40}\selectfont \projTitulo}\\[0.35cm]
+  {\sffamily\color{slate}\large \projGrupo\ \textbullet\ \projModulo}\\[1.3cm]
+
+  % Espaço reservado para a foto da equipe
+  \setlength{\fboxsep}{0pt}%
+  \fcolorbox{oliveSoft}{cream}{\parbox[c][7cm][c]{0.68\textwidth}{\centering\color{slate}\itshape [ Espaço para a foto da equipe ]}}\\[1.1cm]
+
+  {\sffamily\bfseries\color{oliveDeep}\large Integrantes}\\[0.5cm]
+  {\large Andréa \quad\textbullet\quad Arthur Borges \quad\textbullet\quad Luiz Henrique}\\[0.35cm]
+  {\large Matheus \quad\textbullet\quad Yasmin}
+\end{center}
+\clearpage
+
+% ============================================================================
+%  FOLHA DE ROSTO  \textemdash{}  estilo minimalista (referência: EPFL)
+% ============================================================================
+\thispagestyle{empty}
+\vspace*{1.6cm}
+\begin{center}
+  {\logoETE\hspace{1.2cm}\raisebox{2pt}{\logoNAVE}}\\[1.4cm]
+  {\sffamily\color{slate}\small \MakeUppercase{\projODS}}\\[1.0cm]
+  {\sffamily\bfseries\color{ink}\fontsize{46}{46}\selectfont \projTitulo}\\[0.5cm]
+  {\sffamily\bfseries\color{oliveDeep}\Large \projSubtitulo}\\[1.2cm]
+  {\itshape\color{slate} por}\\[0.5cm]
+  {\sffamily\bfseries\Large \projGrupo}\\[0.9cm]
+
+  % Tabela de integrantes
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{c}
+    \arrayrulecolor{oliveSoft}\toprule
+    {\sffamily\bfseries\color{oliveDeep} Integrantes do Grupo}\\
+    \midrule
+    Andréa \quad\textbullet\quad Arthur Borges \quad\textbullet\quad Luiz Henrique \\
+    Matheus \quad\textbullet\quad Yasmin \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\vfill
+
+% Bloco de informações do trabalho
+\begin{center}
+\begin{minipage}{0.82\textwidth}
+\setlength{\arrayrulewidth}{0pt}
+\renewcommand{\arraystretch}{1.35}
+\sffamily\small
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{oliveDeep}}l X@{}}
+Instituição    & \projInstituicao \\
+Curso          & \projCurso \\
+Módulo / Turma & \projModulo \\
+Disciplina     & \projDisciplina \\
+Professora     & \projProfessora \\
+Objetivo (ODS) & \projODS \\
+Etapa          & \projEtapa \\
+\end{tabularx}
+\end{minipage}
+\end{center}
+
+\vspace{0.8cm}
+\begin{center}
+  \logoEscolaEscura\\[2pt]
+  {\sffamily\footnotesize\color{slate}\projData}
+\end{center}
+
+\clearpage
+
+% ============================================================================
+%  RESUMO \textperiodcentered{} PALAVRAS-CHAVE \textperiodcentered{} DESTAQUES
+% ============================================================================
+\pagestyle{corpo}
+
+\begin{center}
+  {\sffamily\bfseries\Large\color{oliveDeep} Resumo}
+\end{center}
+\vspace{2pt}
+
+{\color{ink}
+Nosso projeto busca entender como grandes marcas incentivam o consumo de seus artigos e produtos. Também buscamos saber como a o próprio site oferece os produtos que o usuário procura, será que o site induz o cliente de forma positiva? O ajudando em suas procuras ou apenas jogando informações e produtos que talvez não sejam o que ele procura? Incentivando assim o consumismo desenfreado\ldots\ Assim a ODS 12 se encaixaria totalmente na ideia de consumo, produção responsável e economia circular. Nossa plataforma seria um incentivo tanto para o consumidor quanto para grandes empresas. Durante nossa pesquisa e formulação da ideia, buscamos entender o real impacto que o descarte de artigos de vestiário causam em nosso ecossistema e quais são os caminhos para trazer um futuro mais sustentável e ecológico.
+\par}
+
+\vspace{6pt}
+\noindent\textbf{Palavras-chave:} Reciclagem, Fast Fashion, Economia circular, Poliéster, ODS 12.
+
+\noindent\textbf{Outras palavras-chave:} Greenwashing, ACV (análise de ciclo de vida), Ecofashion.
+
+\vspace{10pt}
+\noindent{\sffamily\bfseries\color{oliveDeep} Destaques da Imersão}
+
+\citacaoDestaque{``há sim possibilidade de reciclar os retalhos e transformá-los em uma nova peça, porém acaba não sendo o foco das indústrias nesses setores. Pois teriam de ter uma grande disponibilização de pessoas para fazer o processo de separação dos retalhos por cores e por composição, aumentando o custo do processo. Mesmo tendo isso como um fator complicador, as empresas que acatarem esse tipo de trabalho, com o tempo terá um baixo custo no processo pois não precisaria investir no plantio e em agrotóxicos que causam impacto no meio ambiente.''\textsuperscript{1}}{Reciclagem têxtil}
+
+\citacaoDestaque{As pessoas vão se dar ao trabalho de levar a roupa até um ponto de coleta por causa de pontos/descontos.}{Hipótese do Grupo 02}
+
+\citacaoDestaque{``intervir diretamente no produto durante sua fase de projeto torna-se mais interessante e eco eficiente, do que buscar soluções end of pipe, ou paliativas para os danos já causados.''\textsuperscript{2}}{Greenwashing e impacto têxtil}
+
+\correcao{A estrutura geral do documento está incorreta. Revisar a ordem das seções seguindo o roteiro da disciplina (Imersão): a sequência das etapas e o encadeamento entre Pesquisa Desk, Observação e Formulário precisam ser reorganizados.}
+
+% ============================================================================
+%  1. INTRODUÇÃO
+% ============================================================================
+\novaSecao{Introdução}
+
+Para a criação do projeto foi necessário entender e usar o design thinking, ``uma abordagem criativa, que é centrada nas pessoas, com o objetivo na resolução de problemas e desenvolvimento de soluções inovadoras. O foco principal é entender as necessidades e desejos das pessoas, para quem um produto, serviço ou sistema está sendo projetado.
+
+Esse processo de entendimento da percepção do usuário para desenho de protótipos com a finalidade de testes passa por divergências e convergências. O quer dizer isso: no design thinking são trabalhadas quatro etapas. A dica é `faça e refaça' quantas forem necessárias.''\textsuperscript{3}
+
+Com isso, pensando na resolução de um tão problema real como: o destino dos resíduos gerados a partir do consumo de artigos de vestuário, pensamos em um produto digital (plataforma, aplicativo) para ajudar no consumo consciente e responsável, mas também do descarte correto (reciclagem).
+
+Para dar mais sentido ao nosso projeto, conectamos ele com uma das ODS's da ONU. O que buscamos é que um problema real seja solucionado ou minimizado. A ODS escolhida foi a 12 que abrange o consumo e a produção responsável, e com nossa ideia vimos que as metas 12.2, 12.5 e 12.8 se relacionam com nossa ideia principal.
+
+\subsection*{Metas da ODS 12}
+\begin{itemize}[leftmargin=1.4cm, itemsep=10pt]
+  \item[\textcolor{olive}{\textbf{12.2}}] Alcançar a gestão sustentável e o uso eficiente dos recursos naturais.
+
+  \item[\textcolor{olive}{\textbf{12.5}}] Reduzir substancialmente a geração de resíduos por meio da prevenção, redução, reciclagem e reuso.
+  \begin{itemize}[label=\textcolor{oliveSoft}{\textbullet}, leftmargin=1cm, topsep=4pt, itemsep=3pt]
+    \item Podemos analisar se a marca produz de forma sustentável e se ela incentiva a economia circular para seus clientes.
+    \item Nosso indução para as marcas terem cada vez mais produtos sustentáveis.
+    \item Nossa ideia de incentivar a reciclagem em conjunto com as próprias marcas com os pontos de descarte.
+  \end{itemize}
+
+  \item[\textcolor{olive}{\textbf{12.8}}] Garantir que as pessoas, em todos os lugares, tenham informação relevante e conscientização para o desenvolvimento sustentável e estilos de vida em harmonia com a natureza.
+  \begin{itemize}[label=\textcolor{oliveSoft}{\textbullet}, leftmargin=1cm, topsep=4pt, itemsep=3pt]
+    \item Nossa plataforma seria esse meio para as pessoas acharem as informações sobre o que elas usam e como usar de forma mais consciente.
+  \end{itemize}
+\end{itemize}
+
+\subsection*{O projeto na prática}
+É uma ponte para a escolha dos clientes em um produto, talvez ele não compre na plataforma\ldots\ Mas pode ser uma ``rede social de avaliação e pesquisa'' e incentivo a sustentabilidade. A ideia é uma plataforma que tanto as marcas iam se cadastrar como os consumidores para um relacionamento entre ambos.
+
+% ============================================================================
+%  2. METODOLOGIA
+% ============================================================================
+\novaSecao{Metodologia}
+
+\subsection{Matriz de Alinhamento}
+Para garantir que o projeto estivesse focado no escopo e no desafio corretos, os parâmetros de alinhamento foram definidos da seguinte forma:
+
+\renewcommand{\arraystretch}{1.45}
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{!{\color{oliveSoft}\vrule}>{\bfseries\color{oliveDeep}\raggedright\arraybackslash}p{4.1cm}!{\color{oliveSoft}\vrule}X!{\color{oliveSoft}\vrule}}
+\arrayrulecolor{oliveSoft}\hline
+\rowcolor{olive}\multicolumn{2}{!{\color{oliveSoft}\vrule}c!{\color{oliveSoft}\vrule}}{\textcolor{white}{\sffamily\bfseries IDENTIFICAÇÃO}}\\ \hline
+Nome / Número do Grupo & Revestu / Grupo 02 \\ \hline
+Integrantes & Yasmin, Matheus, Luiz Henrique, Arthur borges, Andréa. \\ \hline
+ODS Escolhida & ODS 12, Produção e consumo responsável \\ \hline
+\rowcolor{olive}\multicolumn{2}{!{\color{oliveSoft}\vrule}c!{\color{oliveSoft}\vrule}}{\textcolor{white}{\sffamily\bfseries IMERSÃO}}\\ \hline
+Quem pode estar sendo afetado? & pessoas que moram perto de aterros, onde materiais de vestuario estão sendo descartados de forma errada. \\ \hline
+O que o grupo quer descobrir? & com gerar na população um consumo consciente e ajudar os consumidores a praticarem o descarte correto de roupas, calçados etc. \\ \hline
+Quais técnicas de imersão planejam usar? & pesquisa desk, questionario para saber com a população lia com o descarte de tais materiais e observação para entender como o material usado nos artigos afetam nosso dia dia e o planeta. \\ \hline
+\rowcolor{olive}\multicolumn{2}{!{\color{oliveSoft}\vrule}c!{\color{oliveSoft}\vrule}}{\textcolor{white}{\sffamily\bfseries ESCOPO}}\\ \hline
+O que está DENTRO do escopo? & direcionar e facilitar a reciclagem, interação e transparencia de marcas e garantir um consumo consciente e moderado. \\ \hline
+O que está FORA do escopo? & Compras diretas na plataforma, criar pontos próprios de coleta. O intuito é um aplicativo para ajudar na escolha de artigos de vestimenta e direcionar o criente para o descarte correto após o fim do ciclo de vida de seu pertence. \\ \hline
+Hipótese de solução (ideia inicial) & A criação de um aplicativo / rede social que permite que o publico e as marcas falem sobre os produtos e consomem e oferecem com informações de: ciclo de vida, uso ideal, como preservar e como reciclar. Assim gerando econômia circular e ajudando todos a fazerem compras conscientes e incentivando marcas a serem sustentáveis. \\ \hline
+Resultado esperado da imersão & Permitir que usuários vejam tudo que o produto oferece, como e para qual situação ele é mais usual, como preservar produtos que já adquiriram e mostrar pontos de coleta daspróprias marcas para a permitir a reciclagem, e como bônus converter a reciclagem em pontos na loja / marca. \\ \hline
+\end{xltabular}
+\endgroup
+
+\subsection{Matriz CSD}
+Este quadro ajuda a visualizar o que o grupo já domina e tem certeza de como fazer, as suposições sobre tudo que engloba o projeto e as dúvidas que ainda restam \textemdash{} sendo estas últimas o guia principal da pesquisa de campo.
+
+\renewcommand{\arraystretch}{1.4}
+\begingroup
+\small
+\begin{xltabular}{\textwidth}{!{\color{oliveSoft}\vrule}X!{\color{oliveSoft}\vrule}X!{\color{oliveSoft}\vrule}X!{\color{oliveSoft}\vrule}}
+\arrayrulecolor{oliveSoft}\hline
+\rowcolor{olive}\multicolumn{3}{!{\color{oliveSoft}\vrule}c!{\color{oliveSoft}\vrule}}{\textcolor{white}{\sffamily\bfseries MATRIZ CSD \textemdash{} REVESTU}}\\ \hline
+\rowcolor{creamMid}
+\centering\textbf{CERTEZAS} & \centering\textbf{SUPOSIÇÕES} & \centering\arraybackslash\textbf{DÚVIDAS} \\
+\rowcolor{cream}
+\centering\footnotesize\textit{O que é fato ou base do projeto} & \centering\footnotesize\textit{O que achamos que é verdade, mas precisamos validar} & \centering\arraybackslash\footnotesize\textit{Perguntas que a Pesquisa Desk deve responder} \\ \hline
+\endhead
+A indústria têxtil (Fast Fashion) é uma das mais poluentes do mundo.
+& As pessoas vão se dar ao trabalho de levar a roupa até um ponto de coleta por causa de pontos / descontos.
+& Como funciona juridicamente a responsabilidade pelo descarte têxtil no Brasil? \\ \hline
+Os consumidores têm dificuldade em saber como e onde descartar roupas velhas.
+& As grandes multinacionais aceitarão se cadastrar em uma plataforma que permite avaliações negativas de durabilidade dos seus produtos.
+& Existem tecnologias baratas (como QR Codes ou etiquetas inteligentes) para garantir que a peça foi realmente reciclada? \\ \hline
+Roupas de poliéster e materiais sintéticos demoram centenas de anos para se decompor.
+& Gamificação: rankings e selos (estilo Duolingo) são suficientes para mudar o hábito de descarte das pessoas.
+& Qual é a média de desconto que as marcas estão dispostas a oferecer para incentivar a reciclagem? \\ \hline
+Não existem muitas formas de consultar a duração de um produto antes de comprar e usá-lo.
+& O usuário prefere responder um quiz de ``necessidades'' antes de ver os produtos.
+& Como seria um ponto de coleta realmente fácil de acessar? Onde seria? Nas lojas, ou em pontos estratégicos como shoppings e grandes centros? \\ \hline
+Marcas como O Boticário e C\&A já possuem algum nível de logística reversa.
+& Produtos sustentáveis são percebidos pelo público como ``mais caros'' ou ``menos bonitos''.
+& \\ \hline
+\end{xltabular}
+\endgroup
+
+% ============================================================================
+%  3. A PESQUISA DESK
+% ============================================================================
+\novaSecao{A Pesquisa Desk}
+
+Nossa pesquisa teve como intuito de entender como o mercado e industrial da moda funcionam e como os materiais utilizados na fabricação podem ser reciclados de forma correta e eficaz.
+
+Alguns dos temas e observações feitas durante a pesquisa foram essenciais para a idealização do projeto, assim como são importantes para a implementação.
+
+O estudo sobre o materiais usados na fabricação das roupas diz muito sobre seu destino e como nosso propósito é a reciclagem exploramos essa temática. O fast fashion foi importante para entender a dinâmica entre consumo, produto e consumidor e por fim o estudo de marcas que usam Greenwashing nos mostra comportamentos que precisam ser melhorados em relação as marcas que fornecem esses materiais.
+
+\correcao{Falta informar o escopo temporal da pesquisa: até quando (e a partir de quando) foram feitas as buscas no Google. Indicar o período de coleta dos dados/artigos consultados.}
+
+\subsection{Poliéster: o tecido poluente}
+A reciclagem de tecidos sintéticos é algo dificil de ser feito, se a coleta de tais fosse mais eficiente seriam um pouco mais fáceis de ser reciclado, mas é de estrema importância o uso de tecidos com material natural. Mesmo os principais métodos para a reciclagem de material têxtil tendo um alto custo e que requerer diversas etapas, é essencial para uma forma de auxiliar essa pratica que ajudará a sociedade a ter um consumo mais consciente e manter a produção desses artigos mais sustentável.
+
+\citacaoDestaque{``A princípio esse tipo de reciclagem iria ajudar a reduzir a necessidade do consumo de materiais virgens e diminuiria a quantidade de tecidos que vão parar nos aterros, auxiliando na limitação do impacto no meio ambiente. Talvez futuramente teremos outras técnicas mais aprimoradas que irão baratear esse tipo de processo.''\textsuperscript{4}}{Reciclagem têxtil: algodão e poliéster}
+
+\subsection{Fast fashion}
+O fenômeno do fast fashion revolucionou a indústria global ao democratizar o acesso às tendências de moda por meio de uma produção acelerada, de baixo custo e com coleções passageiras. No entanto, essa lógica de consumo rápido gera um severo custo socioambiental, conforme evidencia o trecho analisado, que expõe impactos alarmantes como o descarte anual de 92 milhões de toneladas de resíduos e o consumo de 79 trilhões de litros de água. Diante desse cenário de degradação química e altas emissões de carbono, torna-se evidente que a sustentabilidade do setor depende de uma reforma estrutural imediata. Essa transformação exige tanto a desaceleração do ritmo fabril por parte das empresas quanto uma mudança profunda no comportamento do consumidor, estimulando a transição urgente para as práticas conscientes da ``moda lenta''.
+
+\citacaoDestaque{``A indústria da moda enfrenta um escrutínio global crescente devido às suas operações poluentes na cadeia de suprimentos. Apesar dos impactos ambientais amplamente divulgados, a indústria continua a crescer, em parte devido à ascensão do fast fashion, que se baseia em produção barata, consumo frequente e uso de peças de vestuário de curta duração. Nesta revisão, identificamos os impactos ambientais em pontos críticos da cadeia de valor têxtil e da moda, da produção ao consumo, com foco no uso da água, poluição química, emissões de CO\textsubscript{2} e resíduos têxteis. Os impactos da indústria da moda incluem mais de 92 milhões de toneladas de resíduos produzidos por ano e 79 trilhões de litros de água consumidos. Com base nesses impactos ambientais, destacamos a necessidade de mudanças fundamentais no modelo de negócios da moda, incluindo uma desaceleração da produção e a introdução de práticas sustentáveis em toda a cadeia de suprimentos, bem como uma mudança no comportamento do consumidor --- ou seja, a redução das compras de roupas e o aumento da vida útil das peças. Essas mudanças ressaltam a necessidade de uma transição urgente de volta à moda `lenta', minimizando e mitigando os impactos ambientais prejudiciais, a fim de melhorar a sustentabilidade a longo prazo da cadeia de suprimentos da moda.''\textsuperscript{5}}{The environmental price of fast fashion}
+
+\subsection{Greenwashing}
+\textit{Muitas marcas dizem que são sustentáveis apenas por marketing.}
+
+\citacaoDestaque{``As adversidades ambientais modificaram os paradigmas de produção e consumo de produtos e serviços em geral, favorecendo iniciativas que ludibriam o consumidor com produtos pseudoecológicos, prática chamada greenwashing.''\textsuperscript{6}}{Greenwashing e impacto ambiental na indústria têxtil}
+
+% ============================================================================
+%  4. PESQUISA PRIMÁRIA
+% ============================================================================
+\novaSecao{Pesquisa Primária}
+
+\subsection{Observação}
+\correcao{A observação direta de marcas foi realizada, mas não está registrada na documentação. Além disso, a ordem e a estrutura desta seção estão incorretas: descrever o procedimento da observação (o que foi observado, onde e como) e reposicioná-la na sequência correta da Imersão.}
+Observação feita pela pela própria equipe, onde a partir do artigo \textit{Reciclagem textil: algodão e poliéster} (usado nas citações 1 e 4), onde vimos que a quantidade de material poliéster está presente em muitos produtos de vestiário, sendo inteiramente desse material ou misturado com outros tipos de fio o que dificulta a reciclagem.
+
+\begin{figure}[H]
+\centering
+\captionsetup{justification=raggedright, singlelinecheck=false}
+{\footnotesize\color{slate}\itshape Análise e observação dos tipos de tecidos usados em roupas.}\par\vspace{8pt}
+\begin{tabular}{@{}c@{\hspace{8pt}}c@{\hspace{8pt}}c@{}}
+\begin{minipage}{0.30\textwidth}\centering
+  \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{imgs/tecido1.jpg}
+  \caption{Etiqueta de composição têxtil.}\label{fig:tecido1}
+\end{minipage} &
+\begin{minipage}{0.30\textwidth}\centering
+  \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{imgs/tecido2.jpg}
+  \caption{Etiqueta de composição têxtil.}\label{fig:tecido2}
+\end{minipage} &
+\begin{minipage}{0.30\textwidth}\centering
+  \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{imgs/tecido3.jpg}
+  \caption{Etiqueta de composição têxtil.}\label{fig:tecido3}
+\end{minipage} \\[10pt]
+\begin{minipage}{0.30\textwidth}\centering
+  \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{imgs/tecido4.jpg}
+  \caption{Etiqueta de composição têxtil.}\label{fig:tecido4}
+\end{minipage} &
+\begin{minipage}{0.30\textwidth}\centering
+  \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{imgs/tecido5.jpg}
+  \caption{Etiqueta de composição têxtil.}\label{fig:tecido5}
+\end{minipage} &
+\begin{minipage}{0.30\textwidth}\centering
+  \includegraphics[width=\linewidth, height=4.4cm, keepaspectratio]{imgs/tecido6.jpg}
+  \caption{Etiqueta de composição têxtil.}\label{fig:tecido6}
+\end{minipage} \\
+\end{tabular}
+\vspace{6pt}
+
+{\footnotesize\color{slate}Fonte: do autor (2026). Roupas com material 100\% poliéster ou que contém poliéster.}
+\end{figure}
+
+Também foi observado que em muitos casos o poliéster é misturado com outros tecidos sintéticos como o elastano, ele não existe na natureza e é derivado do petróleo, sendo composto por polímeros de poliuretano. (o poliuretano é uma corrente de macromoléculas sintéticas criada a partir da reação de compostos orgânicos, cuja estrutura pode ser manipulada para criar desde tecidos elásticos até plásticos de alta resistência.)
+
+Entre vários outros aspectos podemos entender que, tecidos sintéticos liberam micro partículas de plástico que contaminam os oceanos e a cadeia alimentar.
+
+\citacaoDestaque{``A poluição proveniente do plástico é apenas uma parte das ações da sociedade que impactam diretamente o meio ambiente, segundo Green Me (2017), a indústria da moda contribui através das fibras sintéticas que são derivadas do plástico e que colaboram para a poluição dos oceanos. A cada ano a indústria têxtil dispensa entre 40 e 50 mil toneladas de corantes artificiais em fontes de água potável. Esses corantes, a base de benzidina, são altamente cancerígenos e apresentam risco de vida a todos os humanos (LEE, 2011). Por sua grande utilização na indústria têxtil, o poliéster é um dos microplásticos mais encontrados em forma de fibra nos mares e oceanos (NAPPER e THOMPSON, 2016 apud FONTANA, MOSSOTTI e MONTARSOLO, 2020). A origem desses microplásticos é proveniente tanto dos processos de fabricação das fibras sintéticas como da manutenção das peças confeccionadas por meio da lavagem doméstica.''\textsuperscript{7}}{Microplásticos e a indústria do vestuário}
+
+Por fim, o descarte incorreto de tecidos (especialmente os sinteticos) geram em varios locais do mundo um fenomeno chamado ``cemiterio de roupas'' em um artigo da BCC fala um pouco sobre esse tipo de descarte.
+
+\citacaoDestaque{``Caminhões carregados com fardos de roupa usada entram e saem da Zona Franca de Iquique, mais conhecida como Zofri. Este paraíso das compras abriga um imenso parque industrial onde operam mais de mil empresas que comercializam seus produtos isentos de impostos. Seu lugar estratégico no norte do Chile --- a poucos quilômetros do porto do Iquique --- transforma a área em um importante centro comercial para outros países latino-americanos como Argentina, Brasil, Peru e Bolívia.''}{BBC News Brasil --- O cemitério de fast fashion no Atacama}
+
+\begin{figure}[H]
+\centering
+% >>> A Figura 7 é foto de terceiros (Bernetti/AFP via BBC). Quando tiver o
+%     arquivo, salve como imgs/atacama.jpg e troque o bloco abaixo por:
+%     \includegraphics[width=0.8\textwidth]{imgs/atacama.jpg}
+\setlength{\fboxsep}{0pt}%
+\fcolorbox{oliveSoft}{cream}{\parbox[c][5cm][c]{0.8\textwidth}{\centering\color{slate}\small\itshape [ Inserir imagem \textemdash{} Figura 7 ]\\[2pt]Montanha de roupas descartadas no Deserto do Atacama, no Chile.}}
+\caption{Montanha de roupas descartadas no Deserto do Atacama, no Chile.}\label{fig:atacama}
+{\footnotesize\color{slate}Fonte: Bernetti / AFP via BBC (2022).\textsuperscript{8}}
+\end{figure}
+
+\subsection{Formulário}
+Pesquisa de campo para saber se o público tem um hábito de reciclar artigos de vestuário e como é a relação deles sobre o ciclo de vida de tais artigos. Ao total são 4 perguntas, tivemos 17 respostas para coletar e analisar dados.
+
+% ---------- GRÁFICO 8 ----------
+\begin{figure}[H]
+\centering
+\caption{Qual é a sua maior dificuldade para reciclar ou descartar roupas que não servem mais? \\ \small Amostra: 17 pessoas que responderam via internet}\label{fig:graf8}
+\vspace{4pt}
+\begin{tikzpicture}
+\pie[radius=2, color={olive, accentYellow, oliveSoft}, text=,
+     every only number node/.style={text=white, font=\footnotesize\bfseries}]{66.7, 28.6, 4.8}
+\end{tikzpicture}
+\vspace{8pt}
+
+\begin{minipage}{0.92\textwidth}\footnotesize
+\legendaItem{olive}{\textbf{66,7\%} --- Não conheço pontos de coleta próximos à minha casa}
+\legendaItem{accentYellow}{\textbf{28,6\%} --- Falta de tempo para levar as peças a um local específico}
+\legendaItem{oliveSoft}{\textbf{4,8\%} --- Não sei quais materiais ou marcas são recicláveis}
+\end{minipage}
+\end{figure}
+
+% ---------- GRÁFICO 9 ----------
+% ATENÇÃO: conferir os dados abaixo no Google Forms.
+% A distribuição atual (66.7, 28.6, 4.8) é idêntica ao Gráfico 8 — pode ser duplicação.
+\begin{figure}[H]
+\centering
+\caption{Com que frequência você avalia o estado das suas roupas para doação ou reciclagem? \\ \small Amostra: 17 pessoas que responderam via internet}\label{fig:graf9}
+\vspace{4pt}
+\begin{tikzpicture}
+\pie[radius=2, color={olive, oliveSoft, accentYellow}, text=,
+     every only number node/.style={text=white, font=\footnotesize\bfseries}]{66.7, 28.6, 4.8}
+\end{tikzpicture}
+\vspace{8pt}
+
+\begin{minipage}{0.92\textwidth}\footnotesize
+\legendaItem{olive}{\textbf{66,7\%} --- Raramente (apenas quando o guarda-roupa fica muito cheio)}
+\legendaItem{oliveSoft}{\textbf{28,6\%} --- Uma ou duas vezes por ano (trocas de estação)}
+\legendaItem{accentYellow}{\textbf{4,8\%} --- Nunca (guardo até ficarem inutilizáveis)}
+\end{minipage}
+\end{figure}
+
+% ---------- GRÁFICO 10 ----------
+\begin{figure}[H]
+\centering
+\caption{O quanto você se sente satisfeito com as informações que as marcas dão sobre a durabilidade das peças? \\ \small Amostra: 17 pessoas que responderam via internet}\label{fig:graf10}
+\vspace{4pt}
+\begin{tikzpicture}
+\pie[radius=2, color={olive, oliveSoft, accentYellow, slate}, text=,
+     every only number node/.style={text=white, font=\footnotesize\bfseries}]{47.6, 19, 19, 14.3}
+\end{tikzpicture}
+\vspace{8pt}
+
+\begin{minipage}{0.92\textwidth}\footnotesize
+\legendaItem{olive}{\textbf{47,6\%} --- Parcialmente satisfeito, mas sinto falta de dados reais de duração}
+\legendaItem{oliveSoft}{\textbf{19\%} --- Insatisfeito, as roupas duram bem menos do que o esperado}
+\legendaItem{accentYellow}{\textbf{19\%} --- Muito insatisfeito, não encontro informação sobre o ciclo de vida}
+\legendaItem{slate}{\textbf{14,3\%} --- Muito satisfeito, as instruções são claras e precisas}
+\end{minipage}
+\end{figure}
+
+% ---------- GRÁFICO 11 ----------
+\begin{figure}[H]
+\centering
+\caption{O que mais te motivaria a usar um aplicativo para registrar o descarte correto de uma peça? \\ \small Amostra: 17 pessoas que responderam via internet}\label{fig:graf11}
+\vspace{4pt}
+\begin{tikzpicture}
+\pie[radius=2, color={olive, oliveSoft, accentYellow, slate}, text=,
+     every only number node/.style={text=white, font=\footnotesize\bfseries}]{52.4, 23.8, 19, 4.8}
+\end{tikzpicture}
+\vspace{8pt}
+
+\begin{minipage}{0.92\textwidth}\footnotesize
+\legendaItem{olive}{\textbf{52,4\%} --- Ter a certeza de que a roupa terá um destino ambientalmente correto}
+\legendaItem{oliveSoft}{\textbf{23,8\%} --- Receber dicas personalizadas de como cuidar melhor das minhas roupas}
+\legendaItem{accentYellow}{\textbf{19\%} --- Receber cupons de desconto em marcas parceiras}
+\legendaItem{slate}{\textbf{4,8\%} --- Ganhar selos de sustentabilidade e subir em um ranking de amigos}
+\end{minipage}
+\end{figure}
+
+\correcao{Conferir os dados: as Figuras~\ref{fig:graf8} e \ref{fig:graf9} apresentam exatamente a mesma distribuição (66,7\% / 28,6\% / 4,8\%) para perguntas diferentes. Verificar no Google Forms se os números das duas perguntas estão corretos ou se houve duplicação ao transcrever as respostas.}
+
+\subsection*{Diagnóstico do Formulário}
+Os resultados da pesquisa revelam que o principal gargalo no ciclo de consumo e descarte de vestuário é de natureza logística, afetando diretamente 94,1\% dos entrevistados devido à falta de tempo ou ao desconhecimento sobre onde entregar as peças; essa barreira prática gera um efeito dominó de desinteresse fazendo com que 70,6\% das pessoas realizem o descarte de forma rara e reativa, apenas quando o guarda-roupa fica completamente lotado. Ao mesmo tempo que esse desafio estrutural existe, constata-se um cenário de insatisfação quase total com a postura das empresas, onde só 11,8\% consideram a comunicação das marcas eficiente, evidenciando uma forte demanda por dados reais sobre a durabilidade e a qualidade dos tecidos. Diante disso, o público sinaliza que dispensa campanhas puramente motivacionais, exigindo, em vez disso, transparência absoluta sobre o destino final das roupas descartadas e o fornecimento de guias práticos de conservação para que possam cuidar melhor de suas peças e prolongar sua vida útil.
+
+% ============================================================================
+%  5. DEFINIÇÃO
+% CORRIGIDO: era \section{Definição}, trocado para \novaSecao{Definição}
+%            para manter o estilo visual e abrir em nova página como as demais seções.
+% ============================================================================
+\novaSecao{Definição}
+
+\subsection{Persona}
+
+% >>> Substitua o conteúdo de exemplo abaixo pelo conteúdo real do REVESTU
+%     (persona Flademir ou equivalente ao projeto de reciclagem de vestuário).
+
+\vspace{0.3cm}
+\noindent A Figura~\ref{fig:persona} apresenta o painel visual da persona construída
+no Figma, consolidando os principais atributos identificados.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{imgs/persona-fladmir.png}
+    \caption{Painel visual da Persona}
+    \label{fig:persona}
+\end{figure}
+
+% ============================================================
+\subsection{Mapa de Empatia}
+
+O Mapa de Empatia foi construído como ferramenta de síntese qualitativa, organizado em
+sete dimensões que aprofundam a compreensão da experiência da persona para além dos
+dados numéricos do formulário.
+
+\vspace{0.3cm}
+\noindent A Figura~\ref{fig:empatia} apresenta o Mapa de Empatia visual elaborado no
+Figma, estruturado conforme os sete quadrantes da ferramenta.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{imgs/mapa-empatia-fladmir.png}
+    \caption{Mapa de Empatia}
+    \label{fig:empatia}
+\end{figure}
+
+% ============================================================
+\subsection{Enunciado do Problema}
+
+A partir da síntese dos dados da Imersão e da construção da persona, o problema central
+do projeto foi definido no seguinte enunciado:
+
+\vspace{0.3cm}
+\begin{quote}
+% >>> Substituir pelo enunciado real do Grupo 02 (REVESTU).
+\textit{[ Enunciado do problema do grupo aqui. ]}
+\end{quote}
+
+% ============================================================
+\subsection{Jornada do Usuário}
+
+\vspace{0.3cm}
+\noindent A Figura~\ref{fig:jornada} apresenta a representação visual da Jornada do
+Usuário elaborada no Figma.
+
+\begin{figure}[H]
+    \centering
+    % CORRIGIDO: nome do arquivo ajustado para o que existe na pasta imgs/
+    \includegraphics[width=\textwidth]{imgs/jornada-usuario-fladmir.png}
+    \caption{Mapa da Jornada do Usuário}
+    \label{fig:jornada}
+\end{figure}
+
+% ============================================================================
+%  6. FONTES
+% ============================================================================
+\novaSecao{Fontes}
+
+\noindent\textit{Todas as pesquisas e artigos adicionados foram publicados no período de 2019 há 2024.}
+
+\vspace{10pt}
+\newcommand{\refnum}[1]{\textcolor{oliveDeep}{\sffamily\bfseries[#1]}\ }
+\setlength{\parskip}{10pt}
+
+\refnum{1, 4} SANTOS, Vanessa Faria dos. \textbf{Reciclagem têxtil: algodão e poliéster}. Orientador: José Ângelo Bortoloto. 2020. Monografia (Trabalho de Conclusão de Curso) --- Centro Paula Souza, [S. l.], 2020. Disponível em: \url{https://ric.cps.sp.gov.br/handle/123456789/6270}. Acesso em: 21 maio 2026.
+
+\refnum{2, 6} REZENDE, Isabela Yankous Vale Santos; LOPES, Camila Santos Doubek. \textbf{Greenwashing e impacto ambiental na indústria têxtil: um estudo de caso}. Projetica, Londrina, v. 10, n. 2, p. 187--208, 2019. DOI: 10.5433/2236-2207.2019v10n2p187. Disponível em: \url{https://ojs.uel.br/revistas/uel/index.php/projetica/article/view/32767}. Acesso em: 21 maio 2026.
+
+\refnum{3} BRASIL. Controladoria-Geral da União. \textbf{Design Thinking}. Portal Gov.br, [202-?]. Disponível em: \url{https://www.gov.br/ouvidorias/pt-br/governanca-de-servicos/ferramentas/design-thinking}. Acesso em: 21 maio 2026.
+
+\refnum{5} NIINIMÄKI, Kirsi et al. \textbf{The environmental price of fast fashion}. Nature Reviews Earth \& Environment, [S. l.], v. 1, n. 4, p. 189--200, 2020. DOI: \url{https://doi.org/10.1038/s43017-020-0039-9}. Disponível em: \url{https://www.nature.com/articles/s43017-020-0039-9}. Acesso em: 21 maio 2026.
+
+\refnum{7} DEMINSKI, Carla Carolina Deola. \textbf{Microplásticos e a indústria do vestuário: uma revisão}. 2021. Trabalho de Conclusão de Curso (Tecnologia em Design de Moda) --- Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul, Erechim, 2021. Disponível em: \url{https://dspace.ifrs.edu.br/xmlui/handle/123456789/1740}. Acesso em: 24 maio 2026.
+
+\refnum{8} BERNETTI, Martin. \textbf{Montanha de roupas descartadas no Deserto do Atacama, no Chile}. 2022. 1 fotografia. Agence France-Presse. In: BBC NEWS BRASIL. O cemitério de `fast fashion' no deserto do Atacama. Londres, 25 jan. 2022. Disponível em: \url{https://www.bbc.com/portuguese/internacional-60144656}. Acesso em: 24 maio 2026.
+
+\end{document}
